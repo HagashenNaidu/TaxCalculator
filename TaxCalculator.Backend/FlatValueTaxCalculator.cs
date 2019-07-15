@@ -13,6 +13,7 @@ namespace TaxCalculator.Services
 
         public double Calculate(double annualIncome)
         {
+            IncomeValidator.Validate(annualIncome);
             if (annualIncome > 200000)
             {
                 return 10000f;

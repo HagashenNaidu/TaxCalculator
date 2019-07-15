@@ -1,7 +1,8 @@
 using NUnit.Framework;
 using System;
+using TaxCalculator.Services;
 
-namespace TaxCalculator.Services.Tests
+namespace TaxCalculator.Backend.Tests
 {
     public class ProgressiveTaxCalculatorTests
     {

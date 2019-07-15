@@ -13,7 +13,7 @@ namespace TaxCalculator.Services
 
         public double Calculate(double annualIncome)
         {
-            if(annualIncome <= 0) return 0;
+            IncomeValidator.Validate(annualIncome);
             return Math.Round(annualIncome * FLAT_PERCENT_RATE,2);
         }
     }
