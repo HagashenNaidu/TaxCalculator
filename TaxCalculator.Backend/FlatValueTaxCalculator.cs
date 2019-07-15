@@ -6,14 +6,16 @@ namespace TaxCalculator.Services
     public class FlatValueTaxCalculator : ITaxCalculator
     {
         private const double FLAT_PERCENT_RATE = 0.05d;
+        private readonly IIncomeValidator _incomeValidator;
 
-        public FlatValueTaxCalculator()
+        public FlatValueTaxCalculator(IIncomeValidator incomeValidator)
         {
+            _incomeValidator = incomeValidator ?? throw new ArgumentNullException(nameof(incomeValidator));
         }
 
         public double Calculate(double annualIncome)
         {
-            IncomeValidator.Validate(annualIncome);
+            _incomeValidator.Validate(annualIncome);
             if (annualIncome > 200000)
             {
                 return 10000f;

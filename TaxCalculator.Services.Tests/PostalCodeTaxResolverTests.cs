@@ -1,4 +1,6 @@
+using Moq;
 using NUnit.Framework;
+using TaxCalculator.Interfaces;
 using TaxCalculator.Services;
 
 namespace TaxCalculator.Services.Tests
@@ -15,7 +17,7 @@ namespace TaxCalculator.Services.Tests
         {
             //-------------------Setup---------------------------------------
             //--------------------Execute------------------------------------
-            var postalTaxResolver = new PostalCodeTaxResolver();
+            var postalTaxResolver = new PostalCodeTaxResolver(new Mock<IIncomeValidator>().Object);
             //--------------------Assert-------------------------------------
             Assert.AreEqual(4, postalTaxResolver.Count());
             Assert.IsInstanceOf<ProgressiveTaxCalculator>(postalTaxResolver.GetTaxCalculator("7441"));
@@ -28,9 +30,9 @@ namespace TaxCalculator.Services.Tests
         public void Given_RegisterTaxCalculator_When_Id_DoesNot_Exist_Should_AddTaxCalculator()
         {
             //------------Setup---------------------------------
-            var taxCalculator = new FlatRateTaxCalculator();
+            var taxCalculator = new FlatRateTaxCalculator(new Mock<IIncomeValidator>().Object);
             const string identifier = "Flat Rate";
-            var taxResolver = new PostalCodeTaxResolver();
+            var taxResolver = new PostalCodeTaxResolver(new Mock<IIncomeValidator>().Object);
             //------------Execute--------------------------------
             taxResolver.RegisterTaxCalculator(identifier, taxCalculator);
             //------------Assert--------------------------------
@@ -43,9 +45,9 @@ namespace TaxCalculator.Services.Tests
         public void Given_RegisterTaxCalculator_When_Id_Does_Exist_ShouldNot_AddTaxCalculator()
         {
             //------------Setup---------------------------------
-            var taxCalculator = new FlatRateTaxCalculator();
+            var taxCalculator = new FlatRateTaxCalculator(new Mock<IIncomeValidator>().Object);
             const string identifier = "Flat Rate";
-            var taxResolver = new PostalCodeTaxResolver();
+            var taxResolver = new PostalCodeTaxResolver(new Mock<IIncomeValidator>().Object);
             taxResolver.RegisterTaxCalculator(identifier, taxCalculator);
             //------------Execute--------------------------------
             taxResolver.RegisterTaxCalculator(identifier, taxCalculator);
@@ -60,9 +62,9 @@ namespace TaxCalculator.Services.Tests
         public void Given_GetTaxCalculator_When_Id_Does_Exist_Should_ReturnTaxCalculator()
         {
             //------------Setup---------------------------------
-            var taxCalculator = new FlatRateTaxCalculator();
+            var taxCalculator = new FlatRateTaxCalculator(new Mock<IIncomeValidator>().Object);
             const string identifier = "Flat Rate";
-            var taxResolver = new PostalCodeTaxResolver();
+            var taxResolver = new PostalCodeTaxResolver(new Mock<IIncomeValidator>().Object);
             taxResolver.RegisterTaxCalculator(identifier, taxCalculator);
             //------------Execute--------------------------------
             var returnedTaxCalculator = taxResolver.GetTaxCalculator(identifier);
@@ -75,9 +77,9 @@ namespace TaxCalculator.Services.Tests
         public void Given_GetTaxCalculator_When_Id_DoesNot_Exist_Should_ThrowException()
         {
             //------------Setup---------------------------------
-            var taxCalculator = new FlatRateTaxCalculator();
+            var taxCalculator = new FlatRateTaxCalculator(new Mock<IIncomeValidator>().Object);
             const string identifier = "Flat Rate";
-            var taxResolver = new PostalCodeTaxResolver();
+            var taxResolver = new PostalCodeTaxResolver(new Mock<IIncomeValidator>().Object);
             taxResolver.RegisterTaxCalculator(identifier, taxCalculator);
             //------------Execute--------------------------------
             try

@@ -1,5 +1,7 @@
+using Moq;
 using NUnit.Framework;
 using System;
+using TaxCalculator.Interfaces;
 using TaxCalculator.Services;
 
 namespace TaxCalculator.Backend.Tests
@@ -12,47 +14,43 @@ namespace TaxCalculator.Backend.Tests
         }
 
         [Test]
-        public void Given_AnnualIncome_When_LessThan_Zero_ShouldThrowException()
+        public void Given_Constructor_When_IncomeValidator_Null_Should_ThrowException()
         {
             //----------Setup---------------------------
-            var progressiveTaxCalculator = new FlatRateTaxCalculator();
+
             //--------Execute---------------------------
             try
             {
-                progressiveTaxCalculator.Calculate(-12547d);
-                Assert.Fail("No exception thrown");
+                new FlatRateTaxCalculator(null);
             }
-            //--------Assert----------------------------
-            catch (ArgumentOutOfRangeException exception)
+            catch (ArgumentNullException e)
             {
-                Assert.AreEqual("Annual Income cannot be less than 0\r\nParameter name: annualIncome", exception.Message);
+                //--------Assert----------------------------
+                Assert.AreEqual("Value cannot be null.\r\nParameter name: incomeValidator", e.Message);
             }
         }
 
         [Test]
-        public void Given_AnnualIncome_When_MoreThan_DoubleMax_ShouldThrowException()
+        public void Given_Calculate_Should_Call_IncomeValidator_Validate()
         {
             //----------Setup---------------------------
-            var progressiveTaxCalculator = new FlatRateTaxCalculator();
+            var mockValidator = new Mock<IIncomeValidator>();
+            mockValidator.Setup(m => m.Validate(It.IsAny<double>()));
+            var progressiveTaxCalculator = new FlatRateTaxCalculator(mockValidator.Object);
             //--------Execute---------------------------
-            try
-            {
-                progressiveTaxCalculator.Calculate(double.MaxValue * 2d);
-                Assert.Fail("No exception thrown");
-            }
+            progressiveTaxCalculator.Calculate(-12547d);
             //--------Assert----------------------------
-            catch (ArgumentOutOfRangeException exception)
-            {
-                Assert.AreEqual($"Annual Income cannot be more than {double.MaxValue}\r\nParameter name: annualIncome", exception.Message);
-            }
+            mockValidator.Verify(m => m.Validate(-12547d), Times.Once);
         }
+
+
 
         [Test]
         public void Given_AnnumIncome_EqualTo_0_ShouldReturn_0()
         {
             //----------Setup---------------------------
             const double annualIncome = 0d;
-            var flatRateTaxCalculator = new FlatRateTaxCalculator();
+            var flatRateTaxCalculator = new FlatRateTaxCalculator(new Mock<IIncomeValidator>().Object);
             //--------Execute---------------------------
             var tax = flatRateTaxCalculator.Calculate(annualIncome);
             //--------Assert----------------------------
@@ -64,7 +62,7 @@ namespace TaxCalculator.Backend.Tests
         {
             //----------Setup---------------------------
             const double annualIncome = 100000d;
-            var flatRateTaxCalculator = new FlatRateTaxCalculator();
+            var flatRateTaxCalculator = new FlatRateTaxCalculator(new Mock<IIncomeValidator>().Object);
             //--------Execute---------------------------
             var tax = flatRateTaxCalculator.Calculate(annualIncome);
             //--------Assert----------------------------
@@ -76,7 +74,7 @@ namespace TaxCalculator.Backend.Tests
         {
             //----------Setup---------------------------
             const double annualIncome = 63900d;
-            var flatRateTaxCalculator = new FlatRateTaxCalculator();
+            var flatRateTaxCalculator = new FlatRateTaxCalculator(new Mock<IIncomeValidator>().Object);
             //--------Execute---------------------------
             var tax = flatRateTaxCalculator.Calculate(annualIncome);
             //--------Assert----------------------------

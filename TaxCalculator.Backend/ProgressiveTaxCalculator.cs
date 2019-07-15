@@ -18,13 +18,16 @@ namespace TaxCalculator.Services
             (minimum:372951d  ,maximum:double.MaxValue  ,rate:0.35d),
 
         };
-        public ProgressiveTaxCalculator()
+        private readonly IIncomeValidator _incomeValidator;
+
+        public ProgressiveTaxCalculator(IIncomeValidator incomeValidator)
         {
+            _incomeValidator = incomeValidator ?? throw new ArgumentNullException(nameof(incomeValidator));
         }
 
         public double Calculate(double annualIncome)
         {
-            IncomeValidator.Validate(annualIncome);
+            _incomeValidator.Validate(annualIncome);
             var taxToBePaid = 0d;
             foreach (var bracketTax in GetBracketTax(annualIncome))
             {

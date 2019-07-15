@@ -18,7 +18,7 @@ namespace TaxCalculator.Backend.Tests
             //--------Execute---------------------------
             try
             {
-                IncomeValidator.Validate(-12547d);
+                new IncomeValidator().Validate(-12547d);
                 Assert.Fail("No exception thrown");
             }
             //--------Assert----------------------------
@@ -35,7 +35,7 @@ namespace TaxCalculator.Backend.Tests
             //--------Execute---------------------------
             try
             {
-                IncomeValidator.Validate(double.MaxValue * 2d);
+                new IncomeValidator().Validate(double.MaxValue * 2d);
                 Assert.Fail("No exception thrown");
             }
             //--------Assert----------------------------

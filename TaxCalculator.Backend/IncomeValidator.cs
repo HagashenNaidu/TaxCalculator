@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using TaxCalculator.Interfaces;
 
-namespace TaxCalculator.Services
+namespace TaxCalculator.Backend
 {
-    public static class IncomeValidator
+    public class IncomeValidator:IIncomeValidator
     {
-        public static void Validate(double annualIncome)
+        public void Validate(double annualIncome)
         {
             if (annualIncome < 0)
             {

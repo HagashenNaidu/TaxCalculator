@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaxCalculator.Interfaces;
 using TaxCalculator.Services;
+using TaxCalculator.Backend;
 
 namespace TaxCalculator
 {
@@ -44,7 +45,8 @@ namespace TaxCalculator
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddSingleton<ITaxResolver>(new PostalCodeTaxResolver());
+            services.AddSingleton<IIncomeValidator,IncomeValidator>();
+            services.AddSingleton<ITaxResolver,PostalCodeTaxResolver>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
