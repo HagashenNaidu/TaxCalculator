@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaxCalculator.Data;
 
 namespace TaxCalculator.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190715052319_AddPostalCodeWithData")]
+    partial class AddPostalCodeWithData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,25 +33,6 @@ namespace TaxCalculator.Data.Migrations
                     b.ToTable("PostalCode");
                 });
 
-            modelBuilder.Entity("TaxCalculator.Data.Models.UserTaxCalculation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CalculationDate");
-
-                    b.Property<string>("EmailAddress");
-
-                    b.Property<string>("PostalCode");
-
-                    b.Property<decimal>("TaxCalculation")
-                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserTaxCalculation");
-                });
 #pragma warning restore 612, 618
         }
     }
