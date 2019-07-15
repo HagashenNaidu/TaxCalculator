@@ -20,10 +20,12 @@
                     <select asp-for="UserCalculation.PostalCode" asp-items="Model.PostalCodes" class="form-control">
                         <option value="">Choose a Postal Code</option>
                     </select>
+                    <span asp-validation-for="UserCalculation.PostalCode" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="UserCalculation.AnnualIncome" class="control-label"></label>
                     <input asp-for="UserCalculation.AnnualIncome" class="form-control" />
+                    <span asp-validation-for="UserCalculation.AnnualIncome" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />

@@ -12,6 +12,7 @@ namespace TaxCalculator.Data.Models
         public Guid Id { get; set; }
 
         [Display(Name ="Email")]
+        [Required]
         public string EmailAddress { get; set; }
 
         [DataType(DataType.Date)]
@@ -19,12 +20,15 @@ namespace TaxCalculator.Data.Models
         public DateTime CalculationDate { get; set; }
 
         [Display(Name = "Postal Code")]
+        [Required]
         public string PostalCode { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
         [Display(Name = "Tax Payable")]
         public double TaxCalculation { get; set; }
 
+        [Required]
+        [Range(0, double.MaxValue)]
         [Column(TypeName = "decimal(18, 2)")]
         [Display(Name = "Annual Income")]
         public double AnnualIncome { get; set; }

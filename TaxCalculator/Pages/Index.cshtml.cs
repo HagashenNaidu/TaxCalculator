@@ -40,6 +40,12 @@ namespace TaxCalculator.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid)
+            {
+                UserCalculations = await _context.UserTaxCalculation.ToAsyncEnumerable().ToList();
+                return Page();
+            }
+
             var calculation = _taxResolver.GetTaxCalculator(UserCalculation.PostalCode).Calculate(UserCalculation.AnnualIncome);
             UserCalculation.Id = Guid.NewGuid();
             UserCalculation.CalculationDate = DateTime.Now;
