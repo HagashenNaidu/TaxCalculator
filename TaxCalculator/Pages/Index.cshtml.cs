@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TaxCalculator.Data;
 using TaxCalculator.Data.Models;
+using TaxCalculator.Interfaces;
 
 namespace TaxCalculator.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly ITaxResolver _taxResolver;
 
-        public IndexModel(ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext context, ITaxResolver taxResolver)
         {
             _context = context;
+            _taxResolver = taxResolver;
             PostalCodes = context.PostalCode.Select(a =>
                                  new SelectListItem
                                  {
@@ -37,7 +40,10 @@ namespace TaxCalculator.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            
+            var calculation = _taxResolver.GetTaxCalculator(UserCalculation.PostalCode).Calculate(UserCalculation.AnnualIncome);
+            UserCalculation.Id = Guid.NewGuid();
+            UserCalculation.CalculationDate = DateTime.Now;
+            UserCalculation.TaxCalculation = calculation;
             _context.UserTaxCalculation.Add(UserCalculation);
             await _context.SaveChangesAsync();
 
