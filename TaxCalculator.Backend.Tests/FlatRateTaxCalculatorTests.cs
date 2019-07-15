@@ -36,9 +36,9 @@ namespace TaxCalculator.Backend.Tests
             //----------Setup---------------------------
             var mockValidator = new Mock<IIncomeValidator>();
             mockValidator.Setup(m => m.Validate(It.IsAny<double>()));
-            var progressiveTaxCalculator = new FlatRateTaxCalculator(mockValidator.Object);
+            var flatRateTaxCalculator = new FlatRateTaxCalculator(mockValidator.Object);
             //--------Execute---------------------------
-            progressiveTaxCalculator.Calculate(-12547d);
+            flatRateTaxCalculator.Calculate(-12547d);
             //--------Assert----------------------------
             mockValidator.Verify(m => m.Validate(-12547d), Times.Once);
         }
